@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/hadirezaei1377/gowebify/pkg/render"
+	"GoWebify/pkg/render"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
