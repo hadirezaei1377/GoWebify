@@ -15,12 +15,12 @@ import (
 
 const portNumber = ":8080"
 
-var app config.AppConfig
-var session *scs.SessionManager
+// global variables
+var app config.AppConfig        // stores the application configuration settings
+var session *scs.SessionManager // manages user sessions
 
 func main() {
-	// change this to true when in production
-	app.InProduction = false
+	app.InProduction = false // program is not running in a production environment
 
 	// set up the session
 	session = scs.New()
@@ -36,6 +36,7 @@ func main() {
 		log.Fatal("cannot create template cache")
 	}
 
+	// initialize the HTML template cache
 	app.TemplateCache = tc
 	app.UseCache = false
 
