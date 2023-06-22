@@ -9,9 +9,9 @@ import (
 
 // AppConfig holds the application config
 type AppConfig struct {
-	UseCache      bool // use cache or not
+	UseCache      bool
 	TemplateCache map[string]*template.Template
-	InfoLog       *log.Logger // save logs
+	InfoLog       *log.Logger
 	InProduction  bool
 	Session       *scs.SessionManager
 }
