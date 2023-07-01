@@ -1,8 +1,8 @@
 package render
 
 import (
-	"GoWebify/pkg/config"
-	"GoWebify/pkg/models"
+	"GoWebify/internal/config"
+	"GoWebify/internal/models"
 	"bytes"
 	"fmt"
 	"html/template"

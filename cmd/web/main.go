@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"time"
 
+	"GoWebify/internal/config"
+	"GoWebify/internal/handlers"
 	"GoWebify/internal/models"
-	"GoWebify/pkg/config"
-	"GoWebify/pkg/handlers"
-	"GoWebify/pkg/render"
+	"GoWebify/internal/render"
 
 	"github.com/alexedwards/scs/v2"
 )

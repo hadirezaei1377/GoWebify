@@ -1,8 +1,8 @@
 package main
 
 import (
-	"GoWebify/pkg/config"
-	"GoWebify/pkg/handlers"
+	"GoWebify/internal/config"
+	"GoWebify/internal/handlers"
 	"net/http"
 
 	"github.com/go-chi/chi" // router

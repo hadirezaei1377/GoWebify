@@ -1,10 +1,10 @@
 package handlers
 
 import (
+	"GoWebify/internal/config"
 	"GoWebify/internal/forms"
-	"GoWebify/pkg/config"
-	"GoWebify/pkg/models"
-	"GoWebify/pkg/render"
+	"GoWebify/internal/models"
+	"GoWebify/internal/render"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -61,7 +61,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 	data["reservation"] = emptyReservation
 
 	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-		Form: forms.New(nil),
+		Form: forms.New(r),
 		Data: data,
 	})
 }
