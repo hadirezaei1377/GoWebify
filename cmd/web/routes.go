@@ -5,8 +5,8 @@ import (
 	"GoWebify/internal/handlers"
 	"net/http"
 
-	"github.com/go-chi/chi" // router
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 func routes(app *config.AppConfig) http.Handler {
@@ -24,6 +24,8 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/search-availability", handlers.Repo.Availability)
 	mux.Post("/search-availability", handlers.Repo.PostAvailability)
 	mux.Post("/search-availability-json", handlers.Repo.AvailabilityJSON)
+	mux.Get("/choose-room/{id}", handlers.Repo.ChooseRoom)
+	mux.Get("/book-room", handlers.Repo.BookRoom)
 
 	mux.Get("/contact", handlers.Repo.Contact)
 
@@ -36,6 +38,3 @@ func routes(app *config.AppConfig) http.Handler {
 
 	return mux
 }
-
-// . means in root of folder
-// * means any thing in folder

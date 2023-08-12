@@ -1,10 +1,9 @@
 package render
 
 import (
+	"GoWebify/internal/models"
 	"net/http"
 	"testing"
-
-	"GoWebify/internal/models"
 )
 
 func TestAddDefaultData(t *testing.T) {
@@ -12,16 +11,16 @@ func TestAddDefaultData(t *testing.T) {
 
 	r, err := getSession()
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	session.Put(r.Context(), "flash", "123")
 
 	result := AddDefaultData(&td, r)
+
 	if result.Flash != "123" {
 		t.Error("flash value of 123 not found in session")
 	}
-
 }
 
 func TestRenderTemplate(t *testing.T) {
@@ -40,16 +39,15 @@ func TestRenderTemplate(t *testing.T) {
 
 	var ww myWriter
 
-	err = RenderTemplate(&ww, r, "home.page.tmpl", &models.TemplateData{})
+	err = Template(&ww, r, "home.page.tmpl", &models.TemplateData{})
 	if err != nil {
-		t.Error("error writing template to browser", err)
+		t.Error("error writing template to browser")
 	}
 
-	err = RenderTemplate(&ww, r, "non-existent.page.tmpl", &models.TemplateData{})
+	err = Template(&ww, r, "non-existent.page.tmpl", &models.TemplateData{})
 	if err == nil {
 		t.Error("rendered template that does not exist")
 	}
-
 }
 
 func getSession() (*http.Request, error) {
@@ -61,16 +59,16 @@ func getSession() (*http.Request, error) {
 	ctx := r.Context()
 	ctx, _ = session.Load(ctx, r.Header.Get("X-Session"))
 	r = r.WithContext(ctx)
+
 	return r, nil
 }
 
 func TestNewTemplates(t *testing.T) {
-	NewTemplates(app)
+	NewRenderer(app)
 }
 
 func TestCreateTemplateCache(t *testing.T) {
 	pathToTemplates = "./../../templates"
-
 	_, err := CreateTemplateCache()
 	if err != nil {
 		t.Error(err)
