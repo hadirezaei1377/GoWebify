@@ -11,10 +11,10 @@ import (
 	"net/http"
 
 	"GoWebify/internal/driver"
-	
+
 	"GoWebify/internal/repository"
 	"GoWebify/internal/repository/dbrepo"
-
+)
 
 // Repo the repository used by the handlers
 var Repo *Repository
