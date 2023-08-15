@@ -9,20 +9,27 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-)
+
+	"GoWebify/internal/driver"
+	
+	"GoWebify/internal/repository"
+	"GoWebify/internal/repository/dbrepo"
+
 
 // Repo the repository used by the handlers
 var Repo *Repository
 
-// Repository is the repository type
+// Repository is the repository typea
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 

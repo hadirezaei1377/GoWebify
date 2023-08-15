@@ -8,6 +8,7 @@ import (
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
+// CRUD
 func main() {
 	// connect to a database
 	conn, err := sql.Open("pgx", "host=localhost port=5432 dbname=test_connect user=tcs password=")
