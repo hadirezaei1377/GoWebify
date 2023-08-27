@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/smtp"
 	"os"
 	"time"
 
@@ -31,6 +32,14 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.SQL.Close()
+
+	// test sending mail
+	from := "me@here.com"
+	auth := smtp.PlainAuth("", from, "", "localhost")
+	err = smtp.SendMail("localhost:1025", auth, from, []string{"you@there.com"}, []byte("Hello, world"))
+	if err != nil {
+		log.Panicln(err)
+	}
 
 	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
 
