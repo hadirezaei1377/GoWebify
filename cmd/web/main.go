@@ -33,6 +33,18 @@ func main() {
 	}
 	defer db.SQL.Close()
 
+	defer close(app.MailChan)
+	ListenForMail()
+
+	msg := models.MailData{
+		To:      "Hadi@R.com",
+		From:    "Ali@h.com",
+		subject: "a subject",
+		Content: "a content",
+	}
+
+	app.MailChan <- msg
+
 	// test sending mail
 	from := "me@here.com"
 	auth := smtp.PlainAuth("", from, "", "localhost")
@@ -60,6 +72,11 @@ func run() (*driver.DB, error) {
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
 	gob.Register(models.RoomRestriction{})
+
+	// use channels for sending mail
+	mailChan := make(chan models.MailData)
+
+	app.MailChan = mailChan
 
 	// change this to true when in production
 	app.InProduction = false

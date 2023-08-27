@@ -60,3 +60,11 @@ type RoomRestriction struct {
 	Reservation   Reservation
 	Restriction   Restriction
 }
+
+// for sending mail to owner and reserver
+type MailData struct {
+	To      string
+	From    string
+	Subject string
+	Content Template.HTML
+}
