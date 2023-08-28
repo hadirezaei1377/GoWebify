@@ -164,3 +164,20 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 		Data: data,
 	})
 }
+
+// notification sending, first for guest
+htmlMessage := fmt.Sprintf(`
+
+<strong>Reservation Confirmation</strong><br>
+Dear %s:, <br>
+This is confirm your reservation from %s to %s.
+`, reservation.StartDate.Format("2023-01-01"), reservation.EndDate.Format("2023-01-01"))
+
+msg := models.MailData{
+	To:      Reservation.Email,
+	From:    "Ali@h.com",
+	subject: "Reservation Confirmation",
+	Content: htmlMessage,
+}
+
+m.App.MailChan <- msg
