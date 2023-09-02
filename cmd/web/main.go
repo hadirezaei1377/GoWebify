@@ -96,6 +96,13 @@ func run() (*driver.DB, error) {
 
 	log.Println("Connected to database!")
 
+
+
+	mailChan := make(chan models.MailData)
+app.MailChan = mailChan
+defer clos(mailChan)
+ListenForMail()
+
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
@@ -111,4 +118,13 @@ func run() (*driver.DB, error) {
 	helpers.NewHelpers(&app)
 
 	return db, nil
+}
+
+
+func ListenForMail() {
+	go func() {
+		for {
+			_=< app.MailChan
+		}
+	}()
 }

@@ -2,7 +2,10 @@ package main
 
 import (
 	"GoWebify/internal/models"
+	"fmt"
+	"io/ioutil"
 	"log"
+	"strings"
 	"time"
 
 	mail "github.com/xhit/go-simple-mail/v2"
@@ -34,7 +37,17 @@ func SendMsg(m models.MailData) {
 
 	email := mail.NewMSG()
 	email.SetFrom(m.From).AddTo(m.To).SetSubject(m.Subject)
-	email.SetBody(mail.TextHTML, "Hello,<strong>world</strong>!")
+	if m.Template == "" {
+		email.SetBody(mail.TextHTML, "Hello,<strong>world</strong>!")
+	} else {
+		data, err := ioutil.ReadFile(fmt.Sprintf("./email-templates/%s", m.Template))
+		if err != nil {
+			app.ErrorLog.Println(err)
+		}
+		mailTemplate := string(data)
+		msgToSend := strings.Replace(mailTemplate, "[%body%]", m.Content, 1)
+		email.SetBody(mail.TextHTML, msgToSend)
+	}
 
 	err = email.Send(client)
 	if err != nil {

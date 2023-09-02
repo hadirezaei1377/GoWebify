@@ -178,6 +178,7 @@ msg := models.MailData{
 	From:    "Ali@h.com",
 	subject: "Reservation Confirmation",
 	Content: htmlMessage,
+	Template: "basic.html",
 }
 
 m.App.MailChan <- msg
