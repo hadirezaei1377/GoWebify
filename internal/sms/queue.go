@@ -27,28 +27,41 @@ func InitQueue() {
 	}
 }
 
-// push sms to queue
-func PushToQueue(msg model.MessageRequest) error {
+// add streaming
+func PushToStream(msg model.MessageRequest, userID string) error {
 	data, err := json.Marshal(msg)
 	if err != nil {
 		return err
 	}
 
-	if err := RedisClient.LPush(ctx, "sms_queue", data).Err(); err != nil {
+	err = RedisClient.XAdd(ctx, &redis.XAddArgs{
+		Stream: fmt.Sprintf("sms_stream_%s", userID), // stream based on user id
+		Values: map[string]interface{}{
+			"data": string(data),
+		},
+	}).Err()
+	if err != nil {
 		return err
 	}
-	fmt.Println("Message pushed to queue successfully")
+	fmt.Println("Message pushed to stream successfully")
 	return nil
 }
 
-func PopFromQueue() (*model.MessageRequest, error) {
-	data, err := RedisClient.RPop(ctx, "sms_queue").Result()
-	if err != nil {
+func ReadFromStream(userID string) (*model.MessageRequest, error) {
+	streamName := fmt.Sprintf("sms_stream_%s", userID)
+
+	result, err := RedisClient.XRead(ctx, &redis.XReadArgs{
+		Streams: []string{streamName, "0"},
+		Block:   0,
+		Count:   1,
+	}).Result()
+
+	if err != nil || len(result) == 0 {
 		return nil, err
 	}
 
 	var msg model.MessageRequest
-	err = json.Unmarshal([]byte(data), &msg)
+	err = json.Unmarshal([]byte(result[0].Messages[0].Values["data"].(string)), &msg)
 	if err != nil {
 		return nil, err
 	}
