@@ -6,12 +6,14 @@ import (
 )
 
 var (
-	ApiKey string
+	ApiKey    string
+	RedisAddr string
 )
 
 func LoadConfig() {
 	ApiKey = os.Getenv("KAVEHNEGAR_API_KEY")
-	if ApiKey == "" {
-		log.Fatal("API key not set")
+	RedisAddr = os.Getenv("REDIS_ADDR")
+	if ApiKey == "" || RedisAddr == "" {
+		log.Fatal("API key or Redis address not set")
 	}
 }
